@@ -1,19 +1,13 @@
 const Hapi = require('hapi');
+
 const loadPlugins = require('./Plugins');
+const loadRoutes = require('./Routes');
 
 const server = new Hapi.Server();
 server.connection({ port: 8080 });
 
 loadPlugins(server);
-
-// routes
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: (req, rep) => {
-        return rep('My first Hapi')
-    }
-});
+loadRoutes(server);
 
 // start server
 server.start((err) => {

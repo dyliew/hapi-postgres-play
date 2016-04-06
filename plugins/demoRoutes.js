@@ -1,9 +1,16 @@
 exports.register = function(server, options, next){
+    // You can do all sort of things here with the server
+    // such as added server.ext(...)
     server.route({
         method: 'GET',
-        path: '/first-plugins',
+        path: '/plugins/{name}',
         handler: (req, rep) => {
-            return rep('My first Hapi plugin')
+            var paramName = req.params.name || 'default';
+            var result = {
+                message: `My first Hapi plugin that goes ${paramName}`,
+                paramName
+            };
+            return rep(result);
         }
     });
 
