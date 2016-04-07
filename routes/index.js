@@ -7,12 +7,13 @@ module.exports = function(server){
         method: 'GET',
         path: '/',
         config: { auth: false },
-        handler: (req, rep) => {
-            var message = {
-                message: "My first Hapi!"
-            };
-            return rep(message)
-        }
+        handler: (req, rep) => rep({ message: "me Hapi true!" })
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/refresh',
+        handler: (req, rep) => rep({ message: "refreshed~" })
     });
 
     glob.sync("./**/*.js", Object.assign({ cwd: './routes' }, config.globOptions))

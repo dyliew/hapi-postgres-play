@@ -1,3 +1,4 @@
+const Boom = require('boom');
 const jwt = require('jsonwebtoken');
 const config = require.main.require('./configurations');
 
@@ -7,11 +8,8 @@ module.exports = function(server){
         path: '/auth/login',
         config: { auth: false },
         handler: (req, rep) => {
-            if (req.payload.username !== 'username' || req.payload.password !== 'password'){
-                return rep({
-                    message: 'Invalid username or password'
-                });
-            }
+            if (req.payload.username !== 'username' || req.payload.password !== 'password')
+                return rep(Boom.badRequest("Invalid username or password"));
 
             var payload = {
                 username: req.payload.username

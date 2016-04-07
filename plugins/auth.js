@@ -35,7 +35,7 @@ exports.register = function(server, options, next){
                 username: req.auth.credentials.username
             };
 
-            var token = jwt.sign(payload, config.auth.jwtOption.secret, {
+            var token = jwt.sign(payload, config.auth.jwtSecret, {
                 expiresIn: '3h',
                 audience: 'audience',
                 issuer: 'issuer'

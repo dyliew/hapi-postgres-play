@@ -9,6 +9,7 @@
   "author": "DY Liew",
   "license": "ISC",
   "dependencies": {
+    "boom": "^3.1.2",
     "glob": "^7.0.3",
     "good": "^6.6.0",
     "good-console": "^5.3.1",
