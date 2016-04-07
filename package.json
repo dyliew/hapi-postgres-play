@@ -19,6 +19,7 @@
     "inert": "^3.2.0",
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.8.2",
-    "massive": "^2.2.0"
+    "massive": "^2.2.0",
+    "moment": "^2.12.0"
   }
 }
