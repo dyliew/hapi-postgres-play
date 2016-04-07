@@ -6,6 +6,7 @@ module.exports = function(server){
     server.route({
         method: 'GET',
         path: '/',
+        config: { auth: false },
         handler: (req, rep) => {
             var message = {
                 message: "My first Hapi!"
@@ -14,13 +15,9 @@ module.exports = function(server){
         }
     });
 
-    glob("./**/*.js", Object.assign({ cwd: './routes' }, config.globOptions), (err, files) => {
-        if (err)
-            throw err;
-
-        files.forEach(function(file){
+    glob.sync("./**/*.js", Object.assign({ cwd: './routes' }, config.globOptions))
+        .forEach(function(file){
             var moduleName = file.slice(0, file.length - 3);
             require(moduleName)(server);
         });
-    });
 };

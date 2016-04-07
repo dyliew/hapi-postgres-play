@@ -14,7 +14,9 @@
     "good-console": "^5.3.1",
     "good-file": "^5.1.2",
     "hapi": "^13.3.0",
+    "hapi-auth-jwt2": "^5.7.0",
     "inert": "^3.2.0",
+    "jsonwebtoken": "^5.7.0",
     "lodash": "^4.8.2",
     "massive": "^2.2.0"
   }

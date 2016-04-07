@@ -1,9 +1,10 @@
 exports.register = function(server, options, next){
     // You can do all sort of things here with the server
-    // such as added server.ext(...)
+    // such as adding server.ext(...)
     server.route({
         method: 'GET',
         path: '/plugins/{name}',
+        // config: { auth: false },
         handler: (req, rep) => {
             var paramName = req.params.name || 'default';
             var result = {

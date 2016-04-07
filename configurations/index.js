@@ -28,5 +28,13 @@ module.exports = {
                 rotate: 'daily'
             }
         }]
+    },
+    auth: {
+        jwtSecret: "secret",
+        jwtOptions: {
+            issuer: "issuer",
+            audience: "audience",
+            expireIn: '3h'
+        }
     }
 };

@@ -4,23 +4,26 @@ const glob = require('glob');
 const config = require.main.require('./configurations');
 
 module.exports = function(server){
+
+    // logging
     server.register({
         register: Good,
         options: config.goodOptions
     }, handlePluginLoadingError);
 
+    // serving static files
     server.register(inert, handlePluginLoadingError);
 
-    glob("./**/*.js", Object.assign({ cwd: './plugins' }, config.globOptions), (err, files) => {
-        if (err)
-            throw err;
+    registerLocalPlugins(server);
+};
 
-        files.forEach(function(file){
+function registerLocalPlugins(server){
+    glob.sync("./**/*.js", Object.assign({ cwd: './plugins' }, config.globOptions))
+        .forEach(function(file){
             var moduleName = file.slice(0, file.length - 3);
             server.register(require(moduleName), handlePluginLoadingError);
         });
-    });
-};
+}
 
 function handlePluginLoadingError(err){
     if (err){
