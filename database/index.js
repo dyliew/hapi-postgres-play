@@ -7,10 +7,10 @@ const connectionString = "postgres://web:aaAA1111@localhost:5432/hapi-postgresql
 
 const instance = massive.connectSync({ connectionString });
 const seedInitialData = function(){
-    if (!instance.user || !instance.user.findDocSync(1)){
-        var defaultUser = new AppUser("test@ic.le");
+    if (!instance['app_user'] || !instance['app_user'].findOneSync({})){
+        var defaultUser = new AppUser(email || "test@ic.le");
         defaultUser.registrationDate = moment.utc();
-        
+
         bcrypt.hash('password', 10, function(err, hash){
             defaultUser.passwordHash = hash;
             instance.saveDoc('app_user', defaultUser, function(err, res){

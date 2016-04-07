@@ -1,6 +1,7 @@
 const hapiAuthJwt2 = require('hapi-auth-jwt2');
 const config = require.main.require('./configurations');
 const jwt = require('jsonwebtoken');
+const db = require('../database').instance;
 
 exports.register = function(server, options, next){
     server.register(hapiAuthJwt2, (err) => {
@@ -12,11 +13,11 @@ exports.register = function(server, options, next){
         server.auth.strategy('jwt', 'jwt', {
             key: config.auth.jwtSecret,
             validateFunc: (decoded, request, callback) => {
-                if (decoded.username !== 'username')
-                    return callback(null, false);
+                db['app_user'].findDoc({ email: decoded.email }, function(err, doc){
+                    if (err || !doc)
+                        return callback(err, false);
 
-                return callback(null, true, {
-                    username: decoded.username
+                    return callback(null, true, { email: decoded.email });
                 });
             }, verifyOptions: {
                 issuer: config.auth.jwtOptions.issuer,
@@ -32,7 +33,7 @@ exports.register = function(server, options, next){
                 return rep.continue();
 
             var payload = {
-                username: req.auth.credentials.username
+                email: req.auth.credentials.email
             };
 
             var token = jwt.sign(payload, config.auth.jwtSecret, {

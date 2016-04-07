@@ -9,6 +9,7 @@
   "author": "DY Liew",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.3.0",
     "boom": "^3.1.2",
     "glob": "^7.0.3",
     "good": "^6.6.0",

@@ -1,6 +1,8 @@
 const Boom = require('boom');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const config = require.main.require('./configurations');
+const db = require('../database/').instance;
 
 module.exports = function(server){
     server.route({
@@ -8,17 +10,29 @@ module.exports = function(server){
         path: '/auth/login',
         config: { auth: false },
         handler: (req, rep) => {
-            if (req.payload.username !== 'username' || req.payload.password !== 'password')
-                return rep(Boom.badRequest("Invalid username or password"));
+            db['app_user'].findDoc({ email: req.payload.email }, function(err, user){
+                if (err)
+                    return rep(Boom.badImplementation(err));
 
-            var payload = {
-                username: req.payload.username
-            };
+                if (!user)
+                    return rep(Boom.notFound("Invalid username or password"));
 
-            var token = jwt.sign(payload, config.auth.jwtSecret, config.auth.jwtOptions);
-            return rep({
-                token,
-                message: "Successful login"
+                bcrypt.compare(req.payload.password, user[0].passwordHash, function(err, res){
+                    if (err)
+                        return rep(Boom.badImplementation(err));
+
+                    if (!res)
+                        return rep(Boom.notFound("Invalid username or password"));
+
+                    var payload = { email: req.payload.email };
+
+                    var token = jwt.sign(payload, config.auth.jwtSecret, config.auth.jwtOptions);
+
+                    return rep({
+                        token,
+                        message: "Successful login"
+                    });
+                })
             });
         }
     });
